@@ -1,4 +1,3 @@
-var topic;
 
 var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=95bfdd6cda3f400aa1f2c12d2ba93f14";
 
@@ -25,14 +24,22 @@ var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=95bf
 $("#create").on('click', function() {
     event.preventDefault();
     let topic = document.getElementById("topic").value;
+    let queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=95bfdd6cda3f400aa1f2c12d2ba93f14";
+    console.log(topic);
     $("#topicButtons").append("<button id=" + topic + ">" + topic + "</button>");
     console.log(queryURL);
     $.ajax({ url: queryURL, method: 'GET' })
         .done(function(response) {
             console.log(response.data[0].rating);
             console.log(response.data);
-            $('body').append("<img src='"+ response.data[0].images.downsized.url + "' >");
+
+            // $('body').append("<p>"+response.data[0].rating);
+            for (var i=0; i<response.data.length; i++) {
+        	$('#GIFArea').prepend("<img src='"+ response.data[i].images.downsized.url + "' >");
+        	$('#GIFArea').prepend("<p>Rating: "+response.data[i].rating+ "</p>");
+        }
         })
+
         
 })
 
