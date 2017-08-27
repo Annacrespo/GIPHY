@@ -1,33 +1,39 @@
 var topic;
 
-var queryURL = "http://api.giphy.com/v1/gifs/search?q=fail" + topic + "&api_key=95bfdd6cda3f400aa1f2c12d2ba93f14";
-$.ajax({url:queryURL, method:'GET'})
-.done(function(response){
-	console.log(response);
-	})
+var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=95bfdd6cda3f400aa1f2c12d2ba93f14";
 
 
-$("button").on("click", function() {
-    event.preventDefault();
-    var x = $(this).data("input");
-    console.log(x);
-    topic = $(this).val();
-    $.ajax({ url: queryURL, method: "GET" })
 
-    .done(function(response) {
-    	var results = response.data;
-    	var topicImage = $("<img>");
+// $("button").on("click", function() {
+//     event.preventDefault();
+//     var x = $(this).data("input");
+//     console.log(x);
+//     topic = $(this).val();
+//     $.ajax({ url: queryURL, method: "GET" })
 
-    })
+//     .done(function(response) {
+//     	var results = response.data;
+//     	var topicImage = $("<img>");
 
-})
+//     })
+
+// })
 
 
 // submit form button needs to call a function that creates a new button via html append to body or parent div
 
-$("#create").on('click', function(){
-	let topic = document.getElementById("topic").value;
-	$("#topicButtons").append("<button id=" + topic + ">" + topic + "</button>");
+$("#create").on('click', function() {
+    event.preventDefault();
+    let topic = document.getElementById("topic").value;
+    $("#topicButtons").append("<button id=" + topic + ">" + topic + "</button>");
+    console.log(queryURL);
+    $.ajax({ url: queryURL, method: 'GET' })
+        .done(function(response) {
+            console.log(response.data[0].rating);
+            console.log(response.data);
+            $('body').append("<img src='"+ response.data[0].images.downsized.url + "' >");
+        })
+        
 })
 
 // submit form input needs to be stored in a variable
@@ -39,16 +45,15 @@ $("#create").on('click', function(){
 //function to set value of attribute on HTML
 
 $(".gif").on("click", function() {
-            var state = $(this).attr("data-state"); //data-state
+    var state = $(this).attr("data-state"); //data-state
 
-            if (state === "still") {
-                $(this).attr("src", $(this.attr("data-animate"))); //data-animate
-                    $(this).attr("data-state", "animate");
+    if (state === "still") {
+        $(this).attr("src", $(this.attr("data-animate"))); //data-animate
+        $(this).attr("data-state", "animate");
 
-                }
-                else {
-                    $(this).attr("src", $(this).attr("data-still"));
-                    $(this).attr("data-state", "still");
-                }
+    } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+    }
 
-            });
+});
